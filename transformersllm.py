@@ -5,7 +5,7 @@ from pydantic import Extra
 
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
-from langchain.llms.utils import enforce_stop_tokens
+from pathlib import Path
 
 DEFAULT_MODEL_ID = "gpt2"
 
@@ -25,7 +25,7 @@ class TransformersLLM(LLM):
     model_kwargs: Optional[dict] = None
     """Keyword arguments passed to the model."""
     model: Any  #: :meta private:
-    """BigDL-LLM Transformers-INT4 model."""
+    """LLM Transformers model."""
     tokenizer: Any  #: :meta private:
     """Huggingface tokenizer model."""
     streaming: bool = True
@@ -74,7 +74,13 @@ class TransformersLLM(LLM):
 
         # TODO: may refactore this code in the future
 
-        model = OVModelForCausalLM.from_pretrained(model_id, export=True, **_model_kwargs)
+        try:
+            model_path = Path('./ir_model')
+            model = OVModelForCausalLM.from_pretrained(model_path, compile=False, **_model_kwargs)
+        except:
+            model = OVModelForCausalLM.from_pretrained(model_id, compile=False, export=True, **_model_kwargs)
+            
+        model.compile()
 
         if "trust_remote_code" in _model_kwargs:
             _model_kwargs = {

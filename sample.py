@@ -29,6 +29,7 @@ def main(args):
     
     question = args.question
     model_path = args.model_path
+    device = args.device
     template ="""{question}"""
 
     prompt = PromptTemplate(template=template, input_variables=["question"])
@@ -41,7 +42,7 @@ def main(args):
 
     llm = TransformersLLM.from_model_id(
         model_id=model_path,
-        model_kwargs={"temperature": 0, "max_length": 64, "trust_remote_code": True},
+        model_kwargs={"device":device, "temperature": 0, "max_length": 64, "trust_remote_code": True},
     )
 
     llm_chain = LLMChain(prompt=prompt, llm=llm)
@@ -57,6 +58,8 @@ if __name__ == '__main__':
                         help='the path to transformers model')
     parser.add_argument('-q', '--question', type=str, default='What is AI?',
                         help='qustion you want to ask.')
+    parser.add_argument('-d', '--device', type=str, default='CPU',
+                        help='device to run LLM')
     args = parser.parse_args()
     
     main(args)
