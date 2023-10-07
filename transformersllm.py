@@ -11,7 +11,7 @@ DEFAULT_MODEL_ID = "gpt2"
 
 
 class TransformersLLM(LLM):
-    """Wrapper around the BigDL-LLM Transformer-INT4 model
+    """Wrapper around the OpenVINO model
 
     Example:
         .. code-block:: python
@@ -105,7 +105,7 @@ class TransformersLLM(LLM):
 
     @property
     def _llm_type(self) -> str:
-        return "BigDL-llm"
+        return "OpenVINO backend"
 
     def _call(
         self,
