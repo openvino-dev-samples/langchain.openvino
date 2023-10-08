@@ -66,16 +66,15 @@ class TransformersLLM(LLM):
             )
 
         _model_kwargs = model_kwargs or {}
-        model_path = Path(model_id)
         # TODO: may refactore this code in the future
         try:
-            tokenizer = AutoTokenizer.from_pretrained(model_path, **_model_kwargs)
+            tokenizer = AutoTokenizer.from_pretrained(model_id, **_model_kwargs)
         except:
             tokenizer = LlamaTokenizer.from_pretrained(model_id, **_model_kwargs)
 
         # TODO: may refactore this code in the future
         try:
-            model = OVModelForCausalLM.from_pretrained(model_path, compile=False, **_model_kwargs)
+            model = OVModelForCausalLM.from_pretrained(model_id, compile=False, **_model_kwargs)
         except:
             model = OVModelForCausalLM.from_pretrained(model_id, compile=False, export=True, **_model_kwargs)
             
