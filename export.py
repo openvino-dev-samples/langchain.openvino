@@ -1,5 +1,6 @@
 from optimum.intel.openvino import OVModelForCausalLM
 from optimum.intel import OVQuantizer
+from transformers import AutoTokenizer, LlamaTokenizer
 import argparse
 from pathlib import Path
 
@@ -30,7 +31,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     model_path = Path(args.output)
-
+    
+    print("====Exporting IR=====")
     ov_model = OVModelForCausalLM.from_pretrained(args.model_id,
                                                   compile=False,
                                                   export=True)
@@ -40,3 +42,11 @@ if __name__ == "__main__":
     else:
         quantizer = OVQuantizer.from_pretrained(ov_model, task="text-generation")
         quantizer.quantize(save_directory=model_path, weights_only=True)
+    
+    print("====Exporting tokenizer=====")
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(args.model_id)
+    except:
+        tokenizer = LlamaTokenizer.from_pretrained(args.model_id)
+        
+    tokenizer.save_pretrained(model_path)
