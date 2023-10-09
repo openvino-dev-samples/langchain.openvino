@@ -1,5 +1,5 @@
 # langchain.openvino
-This sample shows how to implement a text generation model with OpenVINO runtime and LangChain.
+This experimental sample shows how to implement a text generation model with OpenVINO runtime and LangChain.
 
 ## Requirements
 
