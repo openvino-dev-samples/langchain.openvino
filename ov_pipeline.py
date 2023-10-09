@@ -16,20 +16,21 @@ class OpenVINO_Pipeline(LLM):
         .. code-block:: python
 
             from langchain.llms import TransformersLLM
-            llm = TransformersLLM.from_model_id(model_id="THUDM/chatglm-6b")
+            llm = OpenVINO_Pipeline.from_model_id(model_id="meta-llama/Llama-2-7b-chat-hf")
     """
 
     model_id: str = DEFAULT_MODEL_ID
     """Model name or model path to use."""
     model_kwargs: Optional[dict] = None
-    """Keyword arguments passed to the model."""
     model: Any  #: :meta private:
     """LLM Transformers model."""
     tokenizer: Any  #: :meta private:
     """Huggingface tokenizer model."""
     streaming: bool = True
     """Whether to stream the results, token by token."""
-
+    max_new_tokens: int = 64
+    """Maximum number of new token generated."""
+    
     class Config:
         """Configuration for this pydantic object."""
 
@@ -83,11 +84,15 @@ class OpenVINO_Pipeline(LLM):
             _model_kwargs = {
                 k: v for k, v in _model_kwargs.items() if k != "trust_remote_code"
             }
+            
+        if "max_new_tokens" in _model_kwargs:
+            max_new_tokens=_model_kwargs["max_new_tokens"]
 
         return cls(
             model_id=model_id,
             model=model,
             tokenizer=tokenizer,
+            max_new_tokens=max_new_tokens,
             model_kwargs=_model_kwargs,
             **kwargs,
         )
@@ -118,13 +123,11 @@ class OpenVINO_Pipeline(LLM):
             if stop is not None:
                 from transformers.generation.stopping_criteria import StoppingCriteriaList
                 from transformers.tools.agents import StopSequenceCriteria
-                # stop generation when stop words are encountered
-                # TODO: stop generation when the following one is stop word
                 stopping_criteria = StoppingCriteriaList([StopSequenceCriteria(stop,
                                                                                self.tokenizer)])
             else:
                 stopping_criteria = None
-            output = self.model.generate(input_ids, streamer=streamer,
+            output = self.model.generate(input_ids, streamer=streamer, max_new_tokens=self.max_new_tokens,
                                          stopping_criteria=stopping_criteria, **kwargs)
             text = self.tokenizer.decode(output[0], skip_special_tokens=True)
             return text
@@ -137,6 +140,6 @@ class OpenVINO_Pipeline(LLM):
                                                                                self.tokenizer)])
             else:
                 stopping_criteria = None
-            output = self.model.generate(input_ids, stopping_criteria=stopping_criteria, **kwargs)
+            output = self.model.generate(input_ids, max_new_tokens=self.max_new_tokens, stopping_criteria=stopping_criteria, **kwargs)
             text = self.tokenizer.decode(output[0], skip_special_tokens=True)[len(prompt) :]
             return text
