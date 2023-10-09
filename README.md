@@ -1,8 +1,6 @@
 # langchain.openvino
 This sample shows how to implement a text generation model with OpenVINO runtime and LangChain.
 
-The part of codes refered to [BigDL](https://github.com/intel-analytics/BigDL/tree/main/python)
-
 ## Requirements
 
 - Linux, Windows, MacOS
