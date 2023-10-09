@@ -1,6 +1,6 @@
 import argparse
 
-from transformersllm import TransformersLLM
+from ov_pipeline import OpenVINO_Pipeline
 from langchain import PromptTemplate, LLMChain
 
 
@@ -13,13 +13,7 @@ def main(args):
 
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
-    # llm = TransformersPipelineLLM.from_model_id(
-    #     model_id=model_path,
-    #     task="text-generation",
-    #     model_kwargs={"temperature": 0, "max_length": 64, "trust_remote_code": True},
-    # )
-
-    llm = TransformersLLM.from_model_id(
+    llm = OpenVINO_Pipeline.from_model_id(
         model_id=model_path,
         model_kwargs={"device":device, "temperature": 0, "max_length": 64, "trust_remote_code": True},
     )

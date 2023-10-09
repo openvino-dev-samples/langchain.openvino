@@ -5,12 +5,11 @@ from pydantic import Extra
 
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
-from pathlib import Path
 
 DEFAULT_MODEL_ID = "gpt2"
 
 
-class TransformersLLM(LLM):
+class OpenVINO_Pipeline(LLM):
     """Wrapper around the OpenVINO model
 
     Example:
