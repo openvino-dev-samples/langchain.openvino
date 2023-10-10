@@ -15,7 +15,8 @@ def main(args):
 
     llm = OpenVINO_Pipeline.from_model_id(
         model_id=model_path,
-        model_kwargs={"device":device, "temperature": 0, "max_new_tokens": 64, "trust_remote_code": True},
+        model_kwargs={"device":device, "temperature": 0, "trust_remote_code": True},
+        max_new_tokens=64
     )
 
     llm_chain = LLMChain(prompt=prompt, llm=llm)

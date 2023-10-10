@@ -10,7 +10,7 @@ DEFAULT_MODEL_ID = "gpt2"
 
 
 class OpenVINO_Pipeline(LLM):
-    """Wrapper around the OpenVINO model
+    """Wrapper around the OpenVINO model"""
 
     model_id: str = DEFAULT_MODEL_ID
     """Model name or model path to use."""
@@ -77,15 +77,11 @@ class OpenVINO_Pipeline(LLM):
             _model_kwargs = {
                 k: v for k, v in _model_kwargs.items() if k != "trust_remote_code"
             }
-            
-        if "max_new_tokens" in _model_kwargs:
-            max_new_tokens=_model_kwargs["max_new_tokens"]
 
         return cls(
             model_id=model_id,
             model=model,
             tokenizer=tokenizer,
-            max_new_tokens=max_new_tokens,
             model_kwargs=_model_kwargs,
             **kwargs,
         )
