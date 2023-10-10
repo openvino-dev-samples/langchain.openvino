@@ -12,13 +12,6 @@ DEFAULT_MODEL_ID = "gpt2"
 class OpenVINO_Pipeline(LLM):
     """Wrapper around the OpenVINO model
 
-    Example:
-        .. code-block:: python
-
-            from langchain.llms import TransformersLLM
-            llm = OpenVINO_Pipeline.from_model_id(model_id="meta-llama/Llama-2-7b-chat-hf")
-    """
-
     model_id: str = DEFAULT_MODEL_ID
     """Model name or model path to use."""
     model_kwargs: Optional[dict] = None
