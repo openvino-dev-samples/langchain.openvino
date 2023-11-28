@@ -35,3 +35,7 @@ Run text generation sample with local models:
 Run text generation sample with remote models:
 
     $ python3 sample.py -m "meta-llama/Llama-2-7b-chat-hf"
+
+Run RAG sample with local models:
+
+    $ python3 rag.py -m "./ir_model"
