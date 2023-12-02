@@ -1,13 +1,13 @@
 # langchain.openvino
-This experimental sample shows how to implement a text generation model with OpenVINO runtime and LangChain.
+This experimental sample shows how to implement embedding and text generation model with OpenVINO runtime and LangChain.
 
 ## Requirements
 
-- Linux, Windows, MacOS
-- Python >= 3.8.0
+- Linux, Windows
+- Python >= 3.9.0
 - CPU or GPU compatible with OpenVINO.
-- RAM: 32GB
-- vRAM: >=16GB
+- RAM: >= 16GB
+- vRAM: >= 8GB
 
 ## Install the requirements
 
