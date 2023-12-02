@@ -1,6 +1,6 @@
 import argparse
 
-from ov_pipeline import OpenVINO_Pipeline
+from ov_llm import OpenVINO_LLM
 from langchain import PromptTemplate, LLMChain
 
 
@@ -13,7 +13,7 @@ def main(args):
 
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
-    llm = OpenVINO_Pipeline.from_model_id(
+    llm = OpenVINO_LLM.from_model_id(
         model_id=model_path,
         model_kwargs={"device":device, "temperature": 0, "trust_remote_code": True},
         max_new_tokens=64

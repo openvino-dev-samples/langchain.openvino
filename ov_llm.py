@@ -9,7 +9,7 @@ from langchain.llms.base import LLM
 DEFAULT_MODEL_ID = "gpt2"
 
 
-class OpenVINO_Pipeline(LLM):
+class OpenVINO_LLM(LLM):
     """Wrapper around the OpenVINO model"""
 
     model_id: str = DEFAULT_MODEL_ID
@@ -23,7 +23,7 @@ class OpenVINO_Pipeline(LLM):
     """Whether to stream the results, token by token."""
     max_new_tokens: int = 64
     """Maximum number of new token generated."""
-    
+
     class Config:
         """Configuration for this pydantic object."""
 
@@ -46,7 +46,7 @@ class OpenVINO_Pipeline(LLM):
             model_kwargs: Keyword arguments that will be passed to the model and tokenizer.
             kwargs: Extra arguments that will be passed to the model and tokenizer.
 
-        Returns: An object of TransformersLLM.
+        Returns: An object of OpenVINO_LLM.
         """
         try:
             from optimum.intel.openvino import OVModelForCausalLM
@@ -61,16 +61,20 @@ class OpenVINO_Pipeline(LLM):
         _model_kwargs = model_kwargs or {}
         # TODO: may refactore this code in the future
         try:
-            tokenizer = AutoTokenizer.from_pretrained(model_id, **_model_kwargs)
+            tokenizer = AutoTokenizer.from_pretrained(
+                model_id, **_model_kwargs)
         except:
-            tokenizer = LlamaTokenizer.from_pretrained(model_id, **_model_kwargs)
+            tokenizer = LlamaTokenizer.from_pretrained(
+                model_id, **_model_kwargs)
 
         # TODO: may refactore this code in the future
         try:
-            model = OVModelForCausalLM.from_pretrained(model_id, compile=False, **_model_kwargs)
+            model = OVModelForCausalLM.from_pretrained(
+                model_id, compile=False, **_model_kwargs)
         except:
-            model = OVModelForCausalLM.from_pretrained(model_id, compile=False, export=True, **_model_kwargs)
-            
+            model = OVModelForCausalLM.from_pretrained(
+                model_id, compile=False, export=True, **_model_kwargs)
+
         model.compile()
 
         if "trust_remote_code" in _model_kwargs:
@@ -108,7 +112,8 @@ class OpenVINO_Pipeline(LLM):
         if self.streaming:
             from transformers import TextStreamer
             input_ids = self.tokenizer.encode(prompt, return_tensors="pt")
-            streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
+            streamer = TextStreamer(
+                self.tokenizer, skip_prompt=True, skip_special_tokens=True)
             if stop is not None:
                 from transformers.generation.stopping_criteria import StoppingCriteriaList
                 from transformers.tools.agents import StopSequenceCriteria
@@ -129,6 +134,8 @@ class OpenVINO_Pipeline(LLM):
                                                                                self.tokenizer)])
             else:
                 stopping_criteria = None
-            output = self.model.generate(input_ids, max_new_tokens=self.max_new_tokens, stopping_criteria=stopping_criteria, **kwargs)
-            text = self.tokenizer.decode(output[0], skip_special_tokens=True)[len(prompt) :]
+            output = self.model.generate(
+                input_ids, max_new_tokens=self.max_new_tokens, stopping_criteria=stopping_criteria, **kwargs)
+            text = self.tokenizer.decode(output[0], skip_special_tokens=True)[
+                len(prompt):]
             return text

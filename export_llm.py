@@ -18,7 +18,7 @@ if __name__ == "__main__":
     parser.add_argument('-o',
                         '--output',
                         required=False,
-                        default="./ir_model",
+                        default="./llm_model",
                         type=str,
                         help='Required. path to save the ir model')
     parser.add_argument('-cw',
