@@ -26,7 +26,7 @@ This experimental sample shows how to implement a text generation model with Ope
 
 Export the LLM IR model from HuggingFace (optional):
 
-    $ python3 export_llm.py -m "meta-llama/Llama-2-7b-chat-hf"
+    $ python3 model_export/export_llm.py -m "meta-llama/Llama-2-7b-chat-hf"
 
 Run text generation sample with local models:
 
@@ -40,11 +40,11 @@ Run text generation sample with remote models:
 
 Export the embedding IR model from HuggingFace:
 
-    $ python3 export_embedding.py
+    $ python3 model_export/export_embedding.py
 
 Export the LLM IR model from HuggingFace (optional):
 
-    $ python3 export_llm.py -m "meta-llama/Llama-2-7b-chat-hf"
+    $ python3 model_export/export_llm.py -m "meta-llama/Llama-2-7b-chat-hf"
 
 Run RAG sample with local models:
 

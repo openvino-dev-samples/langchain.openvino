@@ -1,6 +1,6 @@
 import argparse
 
-from ov_llm import OpenVINO_LLM
+from ov_pipeline.llm import OpenVINO_LLM
 from langchain import PromptTemplate, LLMChain
 
 

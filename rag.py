@@ -1,6 +1,6 @@
 import argparse
-from ov_llm import OpenVINO_LLM
-from ov_embedding import OpenVINO_Embeddings
+from ov_pipeline.llm import OpenVINO_LLM
+from  ov_pipeline.embedding import OpenVINO_Embeddings
 from langchain import PromptTemplate
 from langchain.vectorstores import Chroma, FAISS
 from langchain.document_loaders import WebBaseLoader
