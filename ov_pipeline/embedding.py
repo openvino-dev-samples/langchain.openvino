@@ -24,13 +24,14 @@ class OpenVINO_Embeddings(BaseModel, Embeddings):
     def from_model_id(
         cls,
         model_id: str,
+        model_kwargs: Optional[dict],
         **kwargs: Any,
     ):
+        _model_kwargs = model_kwargs or {}
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         core = ov.Core()
         model_path = Path(model_id) / "openvino_model.xml"
-        model = core.compile_model(model_path, 'CPU', config={
-                                   "PERFORMANCE_HINT": "THROUGHPUT"})
+        model = core.compile_model(model_path, **_model_kwargs)
         num_stream = model.get_property('NUM_STREAMS')
 
         return cls(

@@ -9,6 +9,7 @@ git+https://github.com/huggingface/transformers.git
 git+https://github.com/huggingface/optimum-intel.git
 
 # For RAG sample
+langchainhub
 sentence_transformers
 bs4
 chromadb==0.4.15

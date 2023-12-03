@@ -23,7 +23,7 @@ def main(args):
     docs = loader.load()
     
     print("=== embedding the texts ===")
-    embedding = OpenVINO_Embeddings.from_model_id(embedding_model_path)
+    embedding = OpenVINO_Embeddings.from_model_id(embedding_model_path, model_kwargs={"device":device,  "config":{"PERFORMANCE_HINT": "THROUGHPUT"}})
     text_splitter = CharacterTextSplitter(chunk_size = 200, chunk_overlap = 0)
     texts = text_splitter.split_documents(docs)
     
